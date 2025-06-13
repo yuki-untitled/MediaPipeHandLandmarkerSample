@@ -1,7 +1,8 @@
 # MediaPipe Hand Landmarker サンプルの使い方
 
+情報保障システム工学・演習 第10回〜第12回「機械学習の活用」で作成したソースコード一式を公開します。
 このプロジェクトは、MediaPipe Hands を使ってWebカメラから手のランドマーク（関節）をリアルタイムで検出・描画するサンプルです。  
-VSCodeの「Live Server」拡張機能を使って簡単に動作確認できます。
+VSCodeの「Live Server」拡張機能を使って、簡単に動作確認できます。
 
 ---
 
@@ -18,9 +19,9 @@ VSCodeの「Live Server」拡張機能を使って簡単に動作確認できま
 ### 1. このリポジトリをクローンまたはダウンロード
 
 ```
-git clone <このリポジトリのURL>
+git clone https://github.com/yuki-untitled/MediaPipeHandLandmarkerSample.git
 ```
-またはZIPでダウンロードして展開してください。
+または、.zipでダウンロードして展開してください。
 
 ---
 
@@ -33,7 +34,8 @@ VSCodeを起動し、`index.html` があるフォルダを開きます。
 ### 3. Live Server 拡張機能をインストール
 
 1. VSCode左側の拡張機能アイコン（四角いアイコン）をクリック
-2. 検索ボックスに `Live Server` と入力
+2. 検索ボックスに `Live Server` と入力  
+   ([Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) ←こちらからアクセスするのも便利です)
 3. 「Live Server」by Ritwick Dey を選択し、「インストール」ボタンをクリック
 
 ---
@@ -57,7 +59,7 @@ VSCodeを起動し、`index.html` があるフォルダを開きます。
 ## 注意事項
 
 - 初回アクセス時にカメラ使用許可を求められます。「許可」してください
-- カメラが認識されない場合は、他のアプリでカメラが使われていないか確認してください
+- カメラが認識されない場合は、他のアプリでカメラが使用中でないか確認してください
 - `modelComplexity: 2` は一部環境で動作しません。`1` のままご利用ください
 
 ---
