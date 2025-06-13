@@ -101,16 +101,29 @@ document.getElementById('anno').addEventListener('click', () => {
 });
 // 5秒後にスクリーンショットを行うボタンにイベントを登録
 document.getElementById('shot').addEventListener('click', () => {
-  // 5秒後に実行
-  setTimeout(() => {
-    // キャンバスの内容を画像データとして取得
-    const dataURL = canvas.toDataURL('image/png'); // PNG形式で取得
-    // ダウンロード用のリンクを作成
-    const link = document.createElement('a');
-    link.href = dataURL;
-    link.download = 'screenshot.png'; // ファイル名
-    link.click(); // ダウンロードを実行
-  }, 5000); // 5000ミリ秒 = 5秒
+  const shotBtn = document.getElementById('shot'); // Shotボタン取得
+  let countdown = 5;                               // カウントダウン秒数
+  const originalText = shotBtn.textContent;        // 元のボタンテキストを保存
+  shotBtn.disabled = true;                         // ボタンを一時的に無効化
+
+  // カウントダウン表示用のinterval
+  const intervalId = setInterval(() => {
+    shotBtn.textContent = countdown;               // ボタンのテキストをカウントダウン秒数に更新
+    countdown--;                                   // カウントダウンを1秒減らす
+    if (countdown < 0) {
+      clearInterval(intervalId);                   // カウントダウン終了
+      shotBtn.textContent = originalText;          // ボタンのテキストを元に戻す
+      shotBtn.disabled = false;                    // ボタンを有効化
+
+      // キャンバスの内容を画像データとして取得
+      const dataURL = canvas.toDataURL('image/png'); // PNG形式で取得
+      // ダウンロード用のリンクを作成
+      const link = document.createElement('a');
+      link.href = dataURL;
+      link.download = 'screenshot.png'; // ファイル名
+      link.click(); // ダウンロードを実行
+    }
+  }, 1000); // 1秒ごとに実行
 });
 
 </script>
