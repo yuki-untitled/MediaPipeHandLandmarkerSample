@@ -19,6 +19,7 @@
   <button id="start">Start</button>       <!-- スタートボタン -->
   <button id="stop">Stop</button>         <!-- ストップボタン -->
   <button id="anno">Ano</button>          <!-- アノテーション番号表示切替ボタンを追加 -->
+  <button id="shot">Shot</button>         <!-- 5秒後にスクリーンショットを行うボタンを追加 -->
 </div>
 
 <!-- (3) 入出力エリア -->
@@ -87,7 +88,7 @@ hands.onResults(results => {
   }
 });
 
-// (4‑6) start / stop / ano ボタンにイベントを登録
+// (4‑6) start / stop / ano / shot ボタンにイベントを登録
 document.getElementById('start').addEventListener('click', () => {
   camera.start();           // カメラを開始
 });
@@ -97,6 +98,19 @@ document.getElementById('stop').addEventListener('click', () => {
 // 番号表示ON/OFFボタンにイベントを登録
 document.getElementById('anno').addEventListener('click', () => {
   showAnno = !showAnno;     // フラグを切り替え
+});
+// 5秒後にスクリーンショットを行うボタンにイベントを登録
+document.getElementById('shot').addEventListener('click', () => {
+  // 5秒後に実行
+  setTimeout(() => {
+    // キャンバスの内容を画像データとして取得
+    const dataURL = canvas.toDataURL('image/png'); // PNG形式で取得
+    // ダウンロード用のリンクを作成
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = 'screenshot.png'; // ファイル名
+    link.click(); // ダウンロードを実行
+  }, 5000); // 5000ミリ秒 = 5秒
 });
 
 </script>
