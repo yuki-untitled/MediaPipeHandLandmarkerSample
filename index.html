@@ -18,6 +18,7 @@
 <div class="ui">
   <button id="start">Start</button>       <!-- スタートボタン -->
   <button id="stop">Stop</button>         <!-- ストップボタン -->
+  <button id="anno">Ano</button>          <!-- アノテーション番号表示切替ボタンを追加 -->
 </div>
 
 <!-- (3) 入出力エリア -->
@@ -30,6 +31,7 @@
 const video = document.getElementById('input');         // ビデオ要素（カメラ入力）
 const canvas = document.getElementById('output');       // キャンバス要素（出力）
 const ctx = canvas.getContext('2d');                    // 描画コンテキスト
+let showAnno = true;                                    // アノテーション番号表示フラグを追加
 
 // (4‑2) Hands インスタンス生成
 const hands = new Hands({
@@ -70,25 +72,31 @@ hands.onResults(results => {
         lineWidth: 1,                                       // 線の太さを指定
       });
 
-      ctx.fillStyle = "#0000FF";                            // 青色のテキスト
-      ctx.font = "16px Arial";                              // フォントサイズとフォントファミリーを指定
-      landmarks.forEach((landmark, index) => {              // 各ランドマークに番号を追加
-        const x = landmark.x * canvas.width;                // ランドマークのx座標
-        const y = landmark.y * canvas.height;               // ランドマークのy座標
-        ctx.fillText(index.toString(), x + 10, y);          // ランドマークの右側に番号を表示
-      });
+      if (showAnno) {                                       // フラグがtrueのときだけ番号を描画
+        ctx.fillStyle = "#0000FF";                          // 青色のテキスト
+        ctx.font = "16px Arial";                            // フォントサイズとフォントファミリーを指定
+        landmarks.forEach((landmark, index) => {            // 各ランドマークに番号を追加
+          const x = landmark.x * canvas.width;              // ランドマークのx座標
+          const y = landmark.y * canvas.height;             // ランドマークのy座標
+          ctx.fillText(index.toString(), x + 10, y);        // ランドマークの右側に番号を表示
+        });
+      }
 
       console.log("landmarks", landmarks);  // デバッグ用：ランドマークの座標をコンソールに出力
     });
   }
 });
 
-// (4‑6) start / stop ボタンにイベントを登録
+// (4‑6) start / stop / ano ボタンにイベントを登録
 document.getElementById('start').addEventListener('click', () => {
   camera.start();           // カメラを開始
 });
 document.getElementById('stop').addEventListener('click', () => {
   camera.stop();            // カメラを停止
+});
+// 番号表示ON/OFFボタンにイベントを登録
+document.getElementById('anno').addEventListener('click', () => {
+  showAnno = !showAnno;     // フラグを切り替え
 });
 
 </script>
