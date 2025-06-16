@@ -18,6 +18,7 @@
 <div class="ui">
   <button id="start">Start</button>       <!-- スタートボタン -->
   <button id="stop">Stop</button>         <!-- ストップボタン -->
+  <button id="video">Video</button>       <!-- ビデオ映像表示切替ボタンを追加 -->
   <button id="anno">Ano</button>          <!-- アノテーション番号表示切替ボタンを追加 -->
   <button id="landmark">Lm</button>       <!-- Landmarks表示切替ボタンを追加 -->
   <button id="shot">Shot</button>         <!-- 5秒後にスクリーンショットを行うボタンを追加 -->
@@ -35,6 +36,7 @@ const canvas = document.getElementById('output');       // キャンバス要素
 const ctx = canvas.getContext('2d');                    // 描画コンテキスト
 let showAnno = true;        // アノテーション番号表示フラグを追加
 let showLandmark = true;    // Landmarks表示フラグを追加
+let showVideo = true;       // ビデオ映像表示フラグを追加
 
 // (4‑2) Hands インスタンス生成
 const hands = new Hands({
@@ -61,8 +63,11 @@ hands.setOptions({
 // (4‑5) 検出結果 onResults コールバック
 hands.onResults(results => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);     // 描画をクリア
-  // カメラ画像を描画
-  ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);    // カメラ画像を描画
+
+  if (showVideo) {
+    // カメラ画像を描画
+    ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);    // カメラ画像を描画
+  }
 
   if (results.multiHandLandmarks && showLandmark) {   // showLandmarkがtrueのときのみランドマーク等を描画
     results.multiHandLandmarks.forEach((landmarks) => {
@@ -105,6 +110,10 @@ document.getElementById('anno').addEventListener('click', () => {
 // Landmarks表示ON/OFFボタンにイベントを登録
 document.getElementById('landmark').addEventListener('click', () => {
   showLandmark = !showLandmark;   // フラグを切り替え
+});
+// ビデオ映像表示ON/OFFボタンにイベントを登録
+document.getElementById('video').addEventListener('click', () => {
+  showVideo = !showVideo;   // フラグを切り替え
 });
 // 5秒後にスクリーンショットを行うボタンにイベントを登録
 document.getElementById('shot').addEventListener('click', () => {
