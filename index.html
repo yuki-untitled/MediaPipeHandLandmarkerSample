@@ -19,6 +19,7 @@
   <button id="start">Start</button>       <!-- スタートボタン -->
   <button id="stop">Stop</button>         <!-- ストップボタン -->
   <button id="anno">Ano</button>          <!-- アノテーション番号表示切替ボタンを追加 -->
+  <button id="landmark">Lm</button>       <!-- Landmarks表示切替ボタンを追加 -->
   <button id="shot">Shot</button>         <!-- 5秒後にスクリーンショットを行うボタンを追加 -->
 </div>
 
@@ -32,7 +33,8 @@
 const video = document.getElementById('input');         // ビデオ要素（カメラ入力）
 const canvas = document.getElementById('output');       // キャンバス要素（出力）
 const ctx = canvas.getContext('2d');                    // 描画コンテキスト
-let showAnno = true;                                    // アノテーション番号表示フラグを追加
+let showAnno = true;        // アノテーション番号表示フラグを追加
+let showLandmark = true;    // Landmarks表示フラグを追加
 
 // (4‑2) Hands インスタンス生成
 const hands = new Hands({
@@ -51,7 +53,7 @@ const camera = new Camera(video, {
 // (4‑4) Hands のオプション設定
 hands.setOptions({
   maxNumHands: 2,                   // 最大検出手数（0: 無効, 1: 片手, 2: 両手）
-  modelComplexity: 1,               // モデルの複雑さ（0: 単純, 1: 標準, 2: 高精度）2は使えなかった。
+  modelComplexity: 1,               // モデルの複雑さ（0: 単純, 1: 標準, 2: 高精度）2はWeb版で非推奨
   minDetectionConfidence: 0.5,      // 検出信頼度の閾値
   minTrackingConfidence: 0.5,       // トラッキング信頼度の閾値
 });
@@ -61,7 +63,8 @@ hands.onResults(results => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);     // 描画をクリア
   // カメラ画像を描画
   ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);    // カメラ画像を描画
-  if (results.multiHandLandmarks) {   // 複数の手のランドマークが検出された場合
+
+  if (results.multiHandLandmarks && showLandmark) {   // showLandmarkがtrueのときのみランドマーク等を描画
     results.multiHandLandmarks.forEach((landmarks) => {
       drawConnectors(ctx, landmarks, HAND_CONNECTIONS, {    // 緑色の線でスケルトンを可視化
         color: '#00FF00',                                   // 色の指定：緑色
@@ -98,6 +101,10 @@ document.getElementById('stop').addEventListener('click', () => {
 // 番号表示ON/OFFボタンにイベントを登録
 document.getElementById('anno').addEventListener('click', () => {
   showAnno = !showAnno;     // フラグを切り替え
+});
+// Landmarks表示ON/OFFボタンにイベントを登録
+document.getElementById('landmark').addEventListener('click', () => {
+  showLandmark = !showLandmark;   // フラグを切り替え
 });
 // 5秒後にスクリーンショットを行うボタンにイベントを登録
 document.getElementById('shot').addEventListener('click', () => {
